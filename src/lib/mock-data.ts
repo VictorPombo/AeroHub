@@ -11,6 +11,10 @@ import type {
   Notification,
   AircraftMember,
   DashboardKPI,
+  PilotCredential,
+  PilotFlightHours,
+  SafetyReport,
+  ChecklistTemplate,
 } from '@/types/models';
 
 // ─── Mock User (Authenticated) ──────────────────────
@@ -387,4 +391,89 @@ export const mockDashboardKPIs: DashboardKPI[] = [
     color: 'cyan',
     href: '/dashboard/schedule',
   },
+];
+
+// ─── Pilot Credentials (M7) ─────────────────────────
+
+export const mockPilotCredentials: PilotCredential[] = [
+  {
+    id: 'cred_001',
+    user_id: 'usr_001',
+    credential_type: 'cma',
+    description: 'Certificado Médico Aeronáutico (1ª Classe)',
+    issued_date: '2025-10-15',
+    expiry_date: '2026-10-15',
+    issuing_authority: 'ANAC',
+    document_number: 'CMA-123456',
+    status: 'valid',
+  },
+  {
+    id: 'cred_002',
+    user_id: 'usr_001',
+    credential_type: 'habilitacao_tipo',
+    description: 'Habilitação de Tipo: C182',
+    issued_date: '2020-05-10',
+    expiry_date: '2028-05-10',
+    issuing_authority: 'ANAC',
+    document_number: 'HT-182-99',
+    status: 'valid',
+  },
+];
+
+export const mockPilotFlightHours: PilotFlightHours = {
+  user_id: 'usr_001',
+  total_hours: 1450.5,
+  last_24h_hours: 2.6,
+  last_30d_hours: 15.2,
+  last_90d_hours: 45.8,
+  last_12m_hours: 180.4,
+  last_flight_date: '2026-05-08',
+};
+
+// ─── Safety Reports (M12) ───────────────────────────
+
+export const mockSafetyReports: SafetyReport[] = [
+  {
+    id: 'sr_001',
+    aircraft_id: 'acft_001',
+    reported_by: 'usr_001',
+    report_type: 'ocorrencia_anormal',
+    date_occurred: '2026-05-05',
+    location_icao: 'SBSP',
+    description: 'Pássaro atingiu o trem de pouso durante a aproximação, sem danos aparentes na inspeção visual.',
+    severity: 'low',
+    status: 'under_review',
+    is_anonymous: false,
+    created_at: '2026-05-06T10:00:00Z',
+  },
+  {
+    id: 'sr_002',
+    reported_by: 'usr_002',
+    report_type: 'perigo_potencial',
+    date_occurred: '2026-05-01',
+    description: 'Marcação apagada na taxiway B do aeroporto base, risco de incursão em pista.',
+    severity: 'medium',
+    status: 'submitted',
+    is_anonymous: true,
+    created_at: '2026-05-01T15:30:00Z',
+  }
+];
+
+// ─── Checklists (M11) ───────────────────────────────
+
+export const mockChecklistTemplates: ChecklistTemplate[] = [
+  {
+    id: 'chk_001',
+    aircraft_model: 'Cessna 182 Skylane',
+    type: 'pre_flight',
+    name: 'Pré-voo C182 (Padrão)',
+    items: [
+      { order: 1, item: 'Documentos da aeronave', action: 'A bordo e válidos', category: 'Cabine', is_critical: true },
+      { order: 2, item: 'Master Switch', action: 'Ligar', category: 'Cabine', is_critical: false },
+      { order: 3, item: 'Quantidade de combustível', action: 'Verificar nos visores', category: 'Cabine', is_critical: true },
+      { order: 4, item: 'Flaps', action: 'Baixar totalmente', category: 'Cabine', is_critical: false },
+      { order: 5, item: 'Master Switch', action: 'Desligar', category: 'Cabine', is_critical: false },
+      { order: 6, item: 'Tubo de Pitot', action: 'Remover capa, verificar desobstrução', category: 'Asa Esquerda', is_critical: true },
+    ]
+  }
 ];

@@ -162,3 +162,62 @@ export interface DashboardKPI {
   color: 'cyan' | 'amber' | 'emerald' | 'rose';
   href?: string;
 }
+
+// ─── Pilot Credentials (M7) ──────────────────────────
+
+export interface PilotCredential {
+  id: string;
+  user_id: string;
+  credential_type: 'cma' | 'habilitacao_tipo' | 'habilitacao_classe' | 'habilitacao_ifr' | 'habilitacao_mlte' | 'habilitacao_instrucao' | 'proficiencia_linguistica' | 'checagem_proficiencia' | 'curso_egress' | 'curso_crm' | 'outro';
+  description: string;
+  issued_date: string;
+  expiry_date: string;
+  issuing_authority: string;
+  document_number?: string;
+  status: 'valid' | 'expiring' | 'expired';
+}
+
+export interface PilotFlightHours {
+  user_id: string;
+  total_hours: number;
+  last_24h_hours: number;
+  last_30d_hours: number;
+  last_90d_hours: number;
+  last_12m_hours: number;
+  last_flight_date: string;
+}
+
+// ─── Safety Reports (M12) ────────────────────────────
+
+export interface SafetyReport {
+  id: string;
+  aircraft_id?: string;
+  reported_by: string;
+  report_type: 'incidente' | 'incidente_grave' | 'ocorrencia_solo' | 'ocorrencia_anormal' | 'perigo_potencial' | 'sugestao_seguranca';
+  date_occurred: string;
+  location_icao?: string;
+  description: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  status: 'submitted' | 'under_review' | 'action_required' | 'resolved' | 'closed';
+  is_anonymous: boolean;
+  created_at: string;
+}
+
+// ─── Checklists (M11) ────────────────────────────────
+
+export interface ChecklistItem {
+  order: number;
+  item: string;
+  action: string;
+  category: string;
+  is_critical: boolean;
+}
+
+export interface ChecklistTemplate {
+  id: string;
+  aircraft_model: string;
+  type: 'pre_flight' | 'post_flight' | 'emergency';
+  name: string;
+  items: ChecklistItem[];
+}
+

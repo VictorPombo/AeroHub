@@ -18,6 +18,9 @@ import {
   BookOpen,
   Wrench,
   Calendar,
+  ShieldAlert,
+  UserCheck,
+  ShieldCheck,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -45,12 +48,22 @@ const navItems = [
     icon: Wrench,
   },
   {
+    label: 'Tripulação',
+    href: '/dashboard/pilot-profile',
+    icon: UserCheck,
+  },
+  {
+    label: 'Segurança',
+    href: '/dashboard/safety',
+    icon: ShieldAlert,
+  },
+  {
     label: 'Agendamentos',
     href: '/dashboard/schedule',
     icon: Calendar,
   },
   {
-    label: 'Perfil',
+    label: 'Perfil & LGPD',
     href: '/dashboard/profile',
     icon: User,
   },
