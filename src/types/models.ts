@@ -51,7 +51,152 @@ export interface AircraftHours {
   updated_at: string;
 }
 
-// ─── Maintenance ─────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// M5 — CTM (Controle Técnico de Manutenção)
+// ═══════════════════════════════════════════════════════
+
+export type CTMCategory =
+  | 'inspecao_periodica'
+  | 'componente'
+  | 'ad'
+  | 'documento'
+  | 'certificado'
+  | 'seguro'
+  | 'equipamento';
+
+export type CTMItemStatus = 'ok' | 'alert' | 'overdue' | 'grounding';
+
+export type DiscrepancySeverity = 'mel' | 'defer' | 'grounding' | 'info';
+export type DiscrepancyStatus = 'open' | 'deferred' | 'resolved' | 'cancelled';
+
+export type MaintenanceLogType =
+  | 'preventiva'
+  | 'corretiva'
+  | 'ad_cumprida'
+  | 'inspecao'
+  | 'overhaul'
+  | 'troca_componente'
+  | 'reparo';
+
+export interface CTMItem {
+  id: string;
+  aircraft_id: string;
+  category: CTMCategory;
+  name: string;
+  // Controle por HORAS
+  limit_hours?: number;
+  last_done_at_hours?: number;
+  next_due_hours?: number;
+  alert_threshold_hours: number;
+  // Controle por DATA
+  last_done_date?: string;
+  next_due_date?: string;
+  alert_threshold_days: number;
+  // Controle por CICLOS
+  limit_cycles?: number;
+  current_cycles?: number;
+  next_due_cycles?: number;
+  // Status
+  status: CTMItemStatus;
+  is_grounding_item: boolean;
+  applicable_to: 'airplane' | 'helicopter' | 'both';
+  component_location?: string;
+  part_number?: string;
+  serial_number?: string;
+  notes?: string;
+}
+
+export interface CTMMaintenanceLog {
+  id: string;
+  aircraft_id: string;
+  ctm_item_id?: string;
+  type: MaintenanceLogType;
+  description: string;
+  performed_at_hours?: number;
+  performed_date: string;
+  next_due_hours?: number;
+  next_due_date?: string;
+  cost?: number;
+  mechanic_name?: string;
+  mechanic_canac?: string;
+  shop_name?: string;
+  work_order_number?: string;
+  notes?: string;
+  created_at: string;
+}
+
+export interface CTMDiscrepancy {
+  id: string;
+  aircraft_id: string;
+  flight_log_id?: string;
+  reported_by?: string;
+  description: string;
+  severity: DiscrepancySeverity;
+  status: DiscrepancyStatus;
+  deferred_until?: string;
+  resolved_at?: string;
+  resolution_notes?: string;
+  created_at: string;
+}
+
+// ═══════════════════════════════════════════════════════
+// M6 — Controle Financeiro
+// ═══════════════════════════════════════════════════════
+
+export type FixedCostCategory =
+  | 'hangar'
+  | 'tripulacao'
+  | 'seguro'
+  | 'administracao'
+  | 'atualizacao_software_painel'
+  | 'outros';
+
+export type VariableCostCategory =
+  | 'combustivel'
+  | 'reserva_manutencao'
+  | 'taxas_aeroportuarias'
+  | 'pouso'
+  | 'pernoite'
+  | 'catering'
+  | 'handling'
+  | 'outros';
+
+export interface FinancialFixedCost {
+  id: string;
+  aircraft_id: string;
+  category: FixedCostCategory;
+  description: string;
+  monthly_amount: number;
+  start_date: string;
+  end_date?: string;
+  active: boolean;
+  notes?: string;
+}
+
+export interface FinancialVariableCost {
+  id: string;
+  aircraft_id: string;
+  flight_log_id?: string;
+  category: VariableCostCategory;
+  description?: string;
+  amount: number;
+  date: string;
+  hours_reference?: number;
+  notes?: string;
+}
+
+export interface FinancialHourConfig {
+  aircraft_id: string;
+  avg_fuel_cost_per_hour: number;
+  avg_maintenance_cost_per_hour: number;
+  overhaul_reserve_per_hour: number;
+  avg_fees_per_hour: number;
+  notes?: string;
+}
+
+// ─── Legacy (kept for backwards compat) ──────────────
+
+export type MaintenanceStatus = 'ok' | 'approaching' | 'due' | 'overdue';
 
 export interface MaintenanceAlert {
   id: string;

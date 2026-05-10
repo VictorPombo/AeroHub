@@ -19,13 +19,14 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  // Start with null to match SSR — avoids hydration mismatch
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Restore session from localStorage after mount (client-only)
   useEffect(() => {
-    // Verificar sessão salva ao carregar a página
-    const storedAuth = localStorage.getItem('aerogest_auth_mvp');
-    if (storedAuth === 'true') {
+    const stored = localStorage.getItem('aerogest_auth_mvp');
+    if (stored === 'true') {
       setUser(mockUser);
     }
     setIsLoading(false);

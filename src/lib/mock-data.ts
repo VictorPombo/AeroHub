@@ -15,6 +15,12 @@ import type {
   PilotFlightHours,
   SafetyReport,
   ChecklistTemplate,
+  CTMItem,
+  CTMMaintenanceLog,
+  CTMDiscrepancy,
+  FinancialFixedCost,
+  FinancialVariableCost,
+  FinancialHourConfig,
 } from '@/types/models';
 
 // ─── Mock User (Authenticated) ──────────────────────
@@ -105,6 +111,8 @@ export const mockAircraftHours: Record<string, AircraftHours> = {
     updated_at: '2026-05-08T08:00:00Z',
   },
 };
+
+
 
 // ─── Maintenance Alerts ─────────────────────────────
 
@@ -477,3 +485,191 @@ export const mockChecklistTemplates: ChecklistTemplate[] = [
     ]
   }
 ];
+
+// ═══════════════════════════════════════════════════════
+// M5 — CTM Mock Data
+// ═══════════════════════════════════════════════════════
+
+export const mockCTMItems: CTMItem[] = [
+  // ── acft_001 (PT-KZM, Cessna 182) ──
+  {
+    id: 'ctm_001', aircraft_id: 'acft_001', category: 'inspecao_periodica',
+    name: 'Inspeção 50h', limit_hours: 50, last_done_at_hours: 1400,
+    next_due_hours: 1450, alert_threshold_hours: 10,
+    alert_threshold_days: 30, status: 'ok', is_grounding_item: true,
+    applicable_to: 'both',
+  },
+  {
+    id: 'ctm_002', aircraft_id: 'acft_001', category: 'inspecao_periodica',
+    name: 'Inspeção 100h', limit_hours: 100, last_done_at_hours: 1400,
+    next_due_hours: 1500, alert_threshold_hours: 10,
+    alert_threshold_days: 30, status: 'alert', is_grounding_item: true,
+    applicable_to: 'both',
+    notes: 'Faltam ~79h — Agendar com antecedência',
+  },
+  {
+    id: 'ctm_003', aircraft_id: 'acft_001', category: 'inspecao_periodica',
+    name: 'Inspeção Anual / IAM',
+    last_done_date: '2025-11-15', next_due_date: '2026-11-15',
+    alert_threshold_hours: 10, alert_threshold_days: 60,
+    status: 'ok', is_grounding_item: true, applicable_to: 'both',
+  },
+  {
+    id: 'ctm_004', aircraft_id: 'acft_001', category: 'componente',
+    name: 'TBO Motor Lycoming IO-540', limit_hours: 2000,
+    last_done_at_hours: 0, next_due_hours: 2000,
+    alert_threshold_hours: 100, alert_threshold_days: 30,
+    status: 'ok', is_grounding_item: true, applicable_to: 'airplane',
+    part_number: 'IO-540-AB1A5',
+  },
+  {
+    id: 'ctm_005', aircraft_id: 'acft_001', category: 'componente',
+    name: 'TBO Hélice McCauley', limit_hours: 2000,
+    last_done_at_hours: 0, next_due_hours: 2000,
+    alert_threshold_hours: 50, alert_threshold_days: 30,
+    status: 'ok', is_grounding_item: true, applicable_to: 'airplane',
+    part_number: 'B2D34C235/90DKB-8',
+  },
+  {
+    id: 'ctm_006', aircraft_id: 'acft_001', category: 'documento',
+    name: 'Certificado de Aeronavegabilidade (CA)',
+    last_done_date: '2025-06-01', next_due_date: '2027-06-01',
+    alert_threshold_hours: 0, alert_threshold_days: 90,
+    status: 'ok', is_grounding_item: true, applicable_to: 'both',
+  },
+  {
+    id: 'ctm_007', aircraft_id: 'acft_001', category: 'seguro',
+    name: 'Seguro RETA',
+    last_done_date: '2025-09-01', next_due_date: '2026-09-01',
+    alert_threshold_hours: 0, alert_threshold_days: 30,
+    status: 'ok', is_grounding_item: true, applicable_to: 'both',
+    notes: 'Vence em 01/09/2026',
+  },
+  {
+    id: 'ctm_008', aircraft_id: 'acft_001', category: 'equipamento',
+    name: 'ELT (validade)',
+    last_done_date: '2025-03-10', next_due_date: '2027-03-10',
+    alert_threshold_hours: 0, alert_threshold_days: 60,
+    status: 'ok', is_grounding_item: true, applicable_to: 'both',
+  },
+  {
+    id: 'ctm_009', aircraft_id: 'acft_001', category: 'ad',
+    name: 'AD 2024-15-08 — Inspeção tubo Pitot',
+    limit_hours: 200, last_done_at_hours: 1400, next_due_hours: 1600,
+    alert_threshold_hours: 20, alert_threshold_days: 30,
+    status: 'ok', is_grounding_item: true, applicable_to: 'airplane',
+  },
+
+  // ── acft_004 (PT-WML, Baron G58) — one overdue item ──
+  {
+    id: 'ctm_020', aircraft_id: 'acft_004', category: 'inspecao_periodica',
+    name: 'Inspeção 100h', limit_hours: 100, last_done_at_hours: 1750,
+    next_due_hours: 1850, alert_threshold_hours: 10,
+    alert_threshold_days: 30, status: 'grounding', is_grounding_item: true,
+    applicable_to: 'both',
+    notes: 'VENCIDO — horas atuais ultrapassaram o limite.',
+  },
+  {
+    id: 'ctm_021', aircraft_id: 'acft_004', category: 'componente',
+    name: 'TBO Motor Esquerdo TCM IO-550', limit_hours: 1800,
+    last_done_at_hours: 0, next_due_hours: 1800,
+    alert_threshold_hours: 100, alert_threshold_days: 30,
+    status: 'overdue', is_grounding_item: true, applicable_to: 'airplane',
+    notes: 'Motor já ultrapassou TBO recomendado.',
+  },
+];
+
+export const mockCTMMaintenanceLogs: CTMMaintenanceLog[] = [
+  {
+    id: 'ctml_001', aircraft_id: 'acft_001', ctm_item_id: 'ctm_001',
+    type: 'inspecao', description: 'Inspeção 50h completa — sem discrepâncias encontradas.',
+    performed_at_hours: 1400, performed_date: '2026-03-23',
+    next_due_hours: 1450, cost: 4500,
+    mechanic_name: 'João da Silva', mechanic_canac: 'CHM-789012',
+    shop_name: 'Naves Aviação', work_order_number: 'OS-2026-0312',
+    created_at: '2026-03-23T16:00:00Z',
+  },
+  {
+    id: 'ctml_002', aircraft_id: 'acft_001',
+    type: 'corretiva', description: 'Substituição do regulador de voltagem — defeito intermitente.',
+    performed_at_hours: 1380, performed_date: '2026-02-10',
+    cost: 2800,
+    mechanic_name: 'Pedro Martins', mechanic_canac: 'CHM-654321',
+    shop_name: 'Naves Aviação', work_order_number: 'OS-2026-0198',
+    created_at: '2026-02-10T14:00:00Z',
+  },
+];
+
+export const mockCTMDiscrepancies: CTMDiscrepancy[] = [
+  {
+    id: 'disc_001', aircraft_id: 'acft_001', flight_log_id: 'flt_001',
+    reported_by: 'usr_001',
+    description: 'Pitot tube com leitura irregular durante cruzeiro. Velocímetro oscilando ±5kt.',
+    severity: 'grounding', status: 'open',
+    created_at: '2026-05-08T11:00:00Z',
+  },
+  {
+    id: 'disc_002', aircraft_id: 'acft_001',
+    reported_by: 'usr_002',
+    description: 'Luz de navegação esquerda intermitente durante voo noturno.',
+    severity: 'defer', status: 'deferred',
+    deferred_until: '2026-05-23',
+    created_at: '2026-05-05T20:00:00Z',
+  },
+  {
+    id: 'disc_003', aircraft_id: 'acft_004', flight_log_id: 'flt_004',
+    reported_by: 'usr_003',
+    description: 'Luz do alternador esquerdo piscou durante a descida para SBCF.',
+    severity: 'defer', status: 'open',
+    created_at: '2026-05-05T13:30:00Z',
+  },
+];
+
+// ═══════════════════════════════════════════════════════
+// M6 — Financial Mock Data
+// ═══════════════════════════════════════════════════════
+
+export const mockFixedCosts: FinancialFixedCost[] = [
+  // ── acft_001 ──
+  { id: 'fc_001', aircraft_id: 'acft_001', category: 'hangar', description: 'Hangar SBJD — Vaga coberta', monthly_amount: 3500, start_date: '2025-01-01', active: true },
+  { id: 'fc_002', aircraft_id: 'acft_001', category: 'tripulacao', description: 'Piloto contratado — Carlos Mendes', monthly_amount: 8000, start_date: '2025-01-01', active: true },
+  { id: 'fc_003', aircraft_id: 'acft_001', category: 'seguro', description: 'Seguro RETA + Casco — parcela mensal', monthly_amount: 4200, start_date: '2025-09-01', active: true },
+  { id: 'fc_004', aircraft_id: 'acft_001', category: 'administracao', description: 'Taxa de administração operacional', monthly_amount: 2500, start_date: '2025-01-01', active: true },
+  { id: 'fc_005', aircraft_id: 'acft_001', category: 'atualizacao_software_painel', description: 'Cartas Jeppesen + GPS Garmin', monthly_amount: 800, start_date: '2025-06-01', active: true },
+  { id: 'fc_006', aircraft_id: 'acft_001', category: 'outros', description: 'Taxa associação de hangar', monthly_amount: 1000, start_date: '2025-01-01', active: true },
+
+  // ── acft_004 ──
+  { id: 'fc_010', aircraft_id: 'acft_004', category: 'hangar', description: 'Hangar SBKP — Box individual', monthly_amount: 4500, start_date: '2024-01-01', active: true },
+  { id: 'fc_011', aircraft_id: 'acft_004', category: 'tripulacao', description: 'Piloto + Copiloto (bimotor)', monthly_amount: 12000, start_date: '2024-01-01', active: true },
+  { id: 'fc_012', aircraft_id: 'acft_004', category: 'seguro', description: 'Seguro completo — RETA + Casco + RC', monthly_amount: 7000, start_date: '2024-06-01', active: true },
+  { id: 'fc_013', aircraft_id: 'acft_004', category: 'administracao', description: 'Gestão operacional + contabilidade', monthly_amount: 3500, start_date: '2024-01-01', active: true },
+  { id: 'fc_014', aircraft_id: 'acft_004', category: 'atualizacao_software_painel', description: 'Garmin G1000 + cartas', monthly_amount: 1500, start_date: '2024-01-01', active: true },
+  { id: 'fc_015', aircraft_id: 'acft_004', category: 'outros', description: 'Estacionamento + lavagem', monthly_amount: 2000, start_date: '2024-01-01', active: true },
+];
+
+export const mockVariableCosts: FinancialVariableCost[] = [
+  { id: 'vc_001', aircraft_id: 'acft_001', flight_log_id: 'flt_001', category: 'combustivel', description: 'AvGas 100LL — 95L', amount: 1425, date: '2026-05-08', hours_reference: 2.6 },
+  { id: 'vc_002', aircraft_id: 'acft_001', flight_log_id: 'flt_001', category: 'taxas_aeroportuarias', description: 'Taxa pouso SBJD', amount: 120, date: '2026-05-08' },
+  { id: 'vc_003', aircraft_id: 'acft_001', flight_log_id: 'flt_003', category: 'combustivel', description: 'AvGas 100LL — 65L', amount: 975, date: '2026-05-06', hours_reference: 1.8 },
+  { id: 'vc_004', aircraft_id: 'acft_001', category: 'reserva_manutencao', description: 'Provisão overhaul motor — maio', amount: 1320, date: '2026-05-01', hours_reference: 4.4, notes: 'R$300/h × 4.4h voadas' },
+  { id: 'vc_005', aircraft_id: 'acft_004', flight_log_id: 'flt_004', category: 'combustivel', description: 'AvGas 100LL — 210L', amount: 3150, date: '2026-05-05', hours_reference: 3.7 },
+  { id: 'vc_006', aircraft_id: 'acft_004', flight_log_id: 'flt_004', category: 'taxas_aeroportuarias', description: 'Taxa pouso SBCF + handling', amount: 350, date: '2026-05-05' },
+  { id: 'vc_007', aircraft_id: 'acft_004', flight_log_id: 'flt_004', category: 'pernoite', description: 'Pernoite SBCF — 1 noite', amount: 180, date: '2026-05-05' },
+];
+
+export const mockHourConfigs: Record<string, FinancialHourConfig> = {
+  acft_001: {
+    aircraft_id: 'acft_001',
+    avg_fuel_cost_per_hour: 450,
+    avg_maintenance_cost_per_hour: 280,
+    overhaul_reserve_per_hour: 300,
+    avg_fees_per_hour: 85,
+  },
+  acft_004: {
+    aircraft_id: 'acft_004',
+    avg_fuel_cost_per_hour: 850,
+    avg_maintenance_cost_per_hour: 420,
+    overhaul_reserve_per_hour: 500,
+    avg_fees_per_hour: 150,
+  },
+};

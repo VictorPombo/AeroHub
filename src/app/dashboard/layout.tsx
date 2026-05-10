@@ -19,17 +19,22 @@ export default function DashboardLayout({
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.push('/login');
+    if (!isAuthenticated && !isLoading) {
+      router.replace('/login');
     }
   }, [isAuthenticated, isLoading, router]);
 
-  if (isLoading || !isAuthenticated) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-aero-cyan/30 border-t-aero-cyan rounded-full animate-spin" />
+      <div className="flex min-h-screen items-center justify-center bg-[#0A0F1E]">
+        <div className="h-8 w-8 rounded-full border-2 border-sky-500 border-t-transparent animate-spin" />
       </div>
     );
+  }
+
+  if (!isAuthenticated) {
+    // Brief flash during redirect — show nothing instead of spinner
+    return null;
   }
 
   return (
