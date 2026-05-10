@@ -21,56 +21,81 @@ import {
   ShieldAlert,
   UserCheck,
   ShieldCheck,
+  Compass,
+  Briefcase,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+
+export type MockRole = 'admin' | 'pilot' | 'mechanic' | 'owner' | 'dov';
 
 const navItems = [
   {
     label: 'Dashboard',
     href: '/dashboard',
     icon: LayoutDashboard,
+    roles: ['admin', 'dov', 'owner'],
   },
   {
     label: 'Aeronaves',
     href: '/dashboard/aircraft',
     icon: Plane,
+    roles: ['admin', 'dov', 'owner', 'mechanic', 'pilot'],
   },
   {
     label: 'Diário de Bordo',
     href: '/dashboard/flights',
     icon: BookOpen,
+    roles: ['admin', 'dov', 'pilot'],
   },
   {
     label: 'Manutenção',
     href: '/dashboard/maintenance',
     icon: Wrench,
+    roles: ['admin', 'dov', 'mechanic'],
   },
   {
     label: 'Tripulação',
     href: '/dashboard/pilot-profile',
     icon: UserCheck,
+    roles: ['admin', 'dov', 'pilot'],
+  },
+  {
+    label: 'Vendas & Fretamento',
+    href: '/dashboard/commercial',
+    icon: Briefcase,
+    roles: ['admin', 'owner'],
+  },
+  {
+    label: 'Coordenação',
+    href: '/dashboard/coordination',
+    icon: Compass,
+    roles: ['admin', 'dov'],
   },
   {
     label: 'Segurança',
     href: '/dashboard/safety',
     icon: ShieldAlert,
+    roles: ['admin', 'dov', 'pilot', 'mechanic'],
   },
   {
     label: 'Agendamentos',
     href: '/dashboard/schedule',
     icon: Calendar,
+    roles: ['admin', 'dov', 'owner'],
   },
   {
     label: 'Perfil & LGPD',
     href: '/dashboard/profile',
     icon: User,
+    roles: ['admin', 'dov', 'owner', 'mechanic', 'pilot'],
   },
   {
     label: 'Configurações',
     href: '/dashboard/settings',
     icon: Settings,
+    roles: ['admin'],
   },
 ];
 
@@ -79,6 +104,10 @@ export function Sidebar() {
   const router = useRouter();
   const { logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
+  const [activeRole, setActiveRole] = useState<MockRole>('admin');
+
+  // Filtra os itens baseados na role atual
+  const filteredNavItems = navItems.filter(item => item.roles.includes(activeRole));
 
   function handleLogout() {
     logout();
@@ -106,9 +135,28 @@ export function Sidebar() {
         </Link>
       </div>
 
+      {/* Role Switcher (Mock) */}
+      <div className="px-3 py-3 border-b border-border/50">
+        {!collapsed && <p className="text-xs text-muted-foreground mb-2 px-1 font-semibold uppercase">Simulador de Acesso</p>}
+        <select 
+          value={activeRole} 
+          onChange={(e) => setActiveRole(e.target.value as MockRole)}
+          className={cn(
+            "w-full bg-black/20 border border-border/50 rounded-md text-xs py-1.5 px-2 outline-none text-aero-cyan focus:border-aero-cyan/50",
+            collapsed && "px-1 text-[10px]"
+          )}
+        >
+          <option value="admin">Administrador</option>
+          <option value="dov">DOV (Operações)</option>
+          <option value="pilot">Piloto</option>
+          <option value="mechanic">Mecânico / Oficina</option>
+          <option value="owner">Proprietário / Cotista</option>
+        </select>
+      </div>
+
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
-        {navItems.map((item) => {
+      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        {filteredNavItems.map((item) => {
           const isActive =
             pathname === item.href ||
             (item.href !== '/dashboard' && pathname.startsWith(item.href));

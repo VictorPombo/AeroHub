@@ -363,18 +363,18 @@ export default function NewFlightPage() {
         </Card>
 
         {/* SECTION: Parte II */}
-        <Card className="glass border-border/50">
+        <Card className="glass border-border/50 flex flex-col">
           <CardHeader className="pb-3 border-b border-border/50">
             <CardTitle className="text-base font-semibold flex items-center gap-2 text-aero-amber">
               <AlertCircle className="w-4 h-4" /> Parte II - Situação Técnica
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-5 flex flex-col h-[calc(100%-60px)]">
-            <div className="flex-1 space-y-2">
+          <CardContent className="p-5 flex flex-col flex-1">
+            <div className="flex-1 flex flex-col space-y-2">
               <Label>Ocorrências / Discrepâncias</Label>
               <Textarea 
                 placeholder="Voo sem alterações ou descreva as ocorrências..." 
-                className="resize-none h-full min-h-[140px] bg-white/[0.02] border-border/50 focus-visible:ring-aero-amber"
+                className="resize-none flex-1 min-h-[140px] bg-white/[0.02] border-border/50 focus-visible:ring-aero-amber"
                 value={formData.observations}
                 onChange={(e) => handleChange('observations', e.target.value)}
               />

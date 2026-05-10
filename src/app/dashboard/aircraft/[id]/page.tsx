@@ -11,6 +11,8 @@ import { Plane, Calendar, Gauge, Wrench } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { mockAircraft } from '@/lib/mock-data';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const maintenanceStatusConfig = {
   ok: { label: 'OK', className: 'text-aero-emerald' },
@@ -36,18 +38,44 @@ export default function AircraftOverviewPage() {
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-semibold">Informações Básicas</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <span className="text-[10px] text-muted-foreground uppercase font-bold">Tipo</span>
-              <p className="text-sm text-foreground capitalize flex items-center gap-2 mt-0.5">
-                <Plane className="w-3.5 h-3.5 text-aero-cyan" /> {aircraft.type === 'airplane' ? 'Avião' : 'Helicóptero'}
-              </p>
-            </div>
-            <div>
-              <span className="text-[10px] text-muted-foreground uppercase font-bold">Ano de Fabricação</span>
-              <p className="text-sm text-foreground flex items-center gap-2 mt-0.5">
-                <Calendar className="w-3.5 h-3.5 text-aero-cyan" /> {aircraft.year}
-              </p>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold">Prefixo</span>
+                <p className="text-sm text-foreground font-mono font-bold mt-0.5">
+                  {aircraft.registration}
+                </p>
+              </div>
+              <div>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold">Tipo</span>
+                <p className="text-sm text-foreground capitalize flex items-center gap-1.5 mt-0.5">
+                  <Plane className="w-3.5 h-3.5 text-aero-cyan" /> {aircraft.type === 'airplane' ? 'Avião' : 'Helicóptero'}
+                </p>
+              </div>
+              <div>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold">Fabricante</span>
+                <p className="text-sm text-foreground font-medium mt-0.5">
+                  {aircraft.manufacturer || 'Não informado'}
+                </p>
+              </div>
+              <div>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold">Modelo</span>
+                <p className="text-sm text-foreground font-medium mt-0.5">
+                  {aircraft.model}
+                </p>
+              </div>
+              <div>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold">Número de Série (S/N)</span>
+                <p className="text-sm text-foreground font-mono mt-0.5">
+                  {aircraft.serial_number || 'N/A'}
+                </p>
+              </div>
+              <div>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold">Ano de Fabricação</span>
+                <p className="text-sm text-foreground flex items-center gap-1.5 mt-0.5">
+                  <Calendar className="w-3.5 h-3.5 text-aero-cyan" /> {aircraft.year}
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -108,6 +136,11 @@ export default function AircraftOverviewPage() {
                 </div>
               );
             })}
+            <Link href={`/dashboard/aircraft/${id}/ctm/work-orders`} className="block mt-4 w-full">
+              <Button className="w-full bg-aero-cyan hover:bg-aero-cyan-light text-aero-navy font-semibold">
+                Acessar CTM Avançado
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>

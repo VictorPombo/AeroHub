@@ -7,7 +7,7 @@
 import { FlightLog, Aircraft } from '@/types/models';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
-import { Plane, Clock, MapPin, Fuel, Users, BookOpen, AlertCircle, FileText } from 'lucide-react';
+import { Plane, Clock, MapPin, Fuel, Users, BookOpen, AlertCircle, FileText, CheckCircle2 } from 'lucide-react';
 
 interface FlightDetailsSheetProps {
   open: boolean;
@@ -49,9 +49,17 @@ export function FlightDetailsSheet({ open, onOpenChange, flight, aircraft }: Fli
               <p className="registration-plate text-lg text-foreground">{aircraft?.registration || 'N/A'}</p>
               <p className="text-xs text-muted-foreground">{aircraft?.model}</p>
             </div>
-            <div className="space-y-1">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Data do Voo</span>
-              <p className="text-lg font-medium text-foreground">{formattedDate}</p>
+            <div className="space-y-4">
+              <div>
+                <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Data do Voo</span>
+                <p className="text-lg font-medium text-foreground">{formattedDate}</p>
+              </div>
+              <div>
+                <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Natureza do Voo</span>
+                <p className="text-sm font-medium text-foreground flex items-center gap-1.5 mt-0.5">
+                  <Badge variant="outline" className="bg-slate-800 text-slate-300 border-slate-700">{flight.nature || 'Não especificada'}</Badge>
+                </p>
+              </div>
             </div>
           </div>
 
@@ -61,22 +69,33 @@ export function FlightDetailsSheet({ open, onOpenChange, flight, aircraft }: Fli
               <MapPin className="w-4 h-4 text-aero-cyan" />
               Trecho e Horários
             </h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white/[0.02] p-4 rounded-xl border border-border/30">
-              <div className="space-y-1">
+            <div className="grid grid-cols-2 gap-y-5 gap-x-4 bg-white/[0.02] p-4 rounded-xl border border-border/30">
+              <div className="space-y-1 col-span-1">
                 <span className="text-[10px] text-muted-foreground uppercase font-bold">Origem</span>
-                <p className="mono-data text-base text-foreground font-semibold">{flight.origin_icao}</p>
+                <p className="mono-data text-lg text-foreground font-bold">{flight.origin_icao}</p>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 col-span-1">
                 <span className="text-[10px] text-muted-foreground uppercase font-bold">Destino</span>
-                <p className="mono-data text-base text-foreground font-semibold">{flight.destination_icao}</p>
+                <p className="mono-data text-lg text-foreground font-bold">{flight.destination_icao}</p>
+              </div>
+              
+              <div className="col-span-2 h-px bg-border/50 my-1" />
+              
+              <div className="space-y-1">
+                <span className="text-[10px] text-muted-foreground uppercase font-bold">Acionamento</span>
+                <p className="mono-data text-base text-foreground">{flight.engine_start}</p>
               </div>
               <div className="space-y-1">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold">Partida / Corte</span>
-                <p className="mono-data text-sm text-foreground">{flight.engine_start} - {flight.engine_stop}</p>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold">Decolagem</span>
+                <p className="mono-data text-base text-foreground">{flight.takeoff}</p>
               </div>
               <div className="space-y-1">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold">Decolagem / Pouso</span>
-                <p className="mono-data text-sm text-foreground">{flight.takeoff} - {flight.landing}</p>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold">Pouso</span>
+                <p className="mono-data text-base text-foreground">{flight.landing}</p>
+              </div>
+              <div className="space-y-1">
+                <span className="text-[10px] text-muted-foreground uppercase font-bold">Corte</span>
+                <p className="mono-data text-base text-foreground">{flight.engine_stop}</p>
               </div>
             </div>
           </div>
@@ -130,9 +149,24 @@ export function FlightDetailsSheet({ open, onOpenChange, flight, aircraft }: Fli
               </div>
               <div className="space-y-1">
                 <span className="text-[10px] text-muted-foreground uppercase font-bold flex items-center gap-1">
-                  <Fuel className="w-3 h-3" /> Combustível Consumido
+                  Pousos Realizados
                 </span>
-                <p className="text-sm text-foreground">{flight.fuel_used ? `${flight.fuel_used} Litros` : 'N/A'}</p>
+                <p className="text-sm text-foreground">{flight.landings || 0}</p>
+              </div>
+              
+              <div className="col-span-2 mt-2 pt-3 border-t border-border/30 grid grid-cols-3 gap-4">
+                 <div className="space-y-1">
+                   <span className="text-[10px] text-muted-foreground uppercase font-bold">Combustível Abastecido</span>
+                   <p className="text-sm text-foreground font-mono">{flight.fuel_used ? `${flight.fuel_used} L` : 'N/A'}</p>
+                 </div>
+                 <div className="space-y-1">
+                   <span className="text-[10px] text-muted-foreground uppercase font-bold">Óleo Lubrificante</span>
+                   <p className="text-sm text-foreground font-mono">{flight.lubricant_used ? `${flight.lubricant_used} Qt` : 'N/A'}</p>
+                 </div>
+                 <div className="space-y-1">
+                   <span className="text-[10px] text-muted-foreground uppercase font-bold">Carga / Bagagem</span>
+                   <p className="text-sm text-foreground font-mono">{flight.cargo_weight !== undefined ? `${flight.cargo_weight} kg` : 'N/A'}</p>
+                 </div>
               </div>
             </div>
           </div>
@@ -157,6 +191,27 @@ export function FlightDetailsSheet({ open, onOpenChange, flight, aircraft }: Fli
               </div>
             )}
           </div>
+          {/* Assinatura Eletrônica (ANAC Compliance) */}
+          {flight.locked && (
+            <div className="mt-8 pt-8 border-t border-border/50 flex flex-col items-center">
+              <div className="w-64 h-16 border-b border-slate-700 relative flex items-end justify-center pb-2">
+                <span 
+                  className="text-4xl text-foreground opacity-80 tracking-widest" 
+                  style={{ fontFamily: "'Brush Script MT', 'Dancing Script', cursive" }}
+                >
+                  {flight.pilot_name}
+                </span>
+                <div className="absolute right-0 bottom-2 flex flex-col items-end opacity-60">
+                   <CheckCircle2 className="w-4 h-4 text-aero-cyan mb-0.5" />
+                   <span className="text-[8px] font-mono text-aero-cyan">{flight.hash?.substring(0, 8) || 'verified'}</span>
+                </div>
+              </div>
+              <span className="text-xs text-muted-foreground mt-3 uppercase tracking-widest font-semibold">Assinatura do Piloto em Comando</span>
+              <span className="text-[10px] text-muted-foreground mt-1 text-center max-w-sm">
+                Declaro que as informações deste registro são verdadeiras e precisas, de acordo com as regulamentações da ANAC e RBAC.
+              </span>
+            </div>
+          )}
           
           <div className="pb-8" />
         </div>

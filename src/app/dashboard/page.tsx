@@ -34,6 +34,9 @@ import {
 import { FlightDetailsSheet } from '@/components/flight-details-sheet';
 import { MaintenanceDetailsSheet } from '@/components/maintenance-details-sheet';
 import type { FlightLog, MaintenanceAlert } from '@/types/models';
+import dynamic from 'next/dynamic';
+
+const FleetMap = dynamic(() => import('@/components/fleet-map'), { ssr: false });
 
 // Map icon strings to components
 const iconMap: Record<string, React.ElementType> = {
@@ -161,6 +164,11 @@ export default function DashboardPage() {
           return <div key={index} className="flex flex-col h-full">{cardContent}</div>;
         })}
       </div>
+
+      {/* Real-time Fleet Map */}
+      <Card className="glass border-border/50 p-1 mb-6">
+        <FleetMap />
+      </Card>
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

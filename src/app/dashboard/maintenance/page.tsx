@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { mockMaintenanceAlerts, mockAircraft } from '@/lib/mock-data';
 import { MaintenanceAlert } from '@/types/models';
 import { Wrench, ShieldAlert, Plus, CheckCircle2, AlertTriangle, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -44,9 +45,11 @@ export default function MaintenancePage() {
             Acompanhe vencimentos, revisões programadas e Diretrizes de Aeronavegabilidade (ADs).
           </p>
         </div>
-        <Button className="bg-aero-cyan hover:bg-aero-cyan-light text-aero-navy font-semibold gap-2 shrink-0">
-          <Plus className="w-4 h-4" /> Registrar Intervenção
-        </Button>
+        <Link href="/dashboard/maintenance/new">
+          <Button className="bg-aero-cyan hover:bg-aero-cyan-light text-aero-navy font-semibold gap-2 shrink-0">
+            <Plus className="w-4 h-4" /> Registrar Intervenção
+          </Button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -73,18 +76,18 @@ export default function MaintenancePage() {
                   return (
                     <Card key={alert.id} className="glass border-aero-rose/30 hover:border-aero-rose/60 transition-colors cursor-pointer group" onClick={() => setSelectedAlert(alert)}>
                       <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div className="flex items-start gap-4">
-                          <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center shrink-0", cfg.bg, cfg.color)}>
+                        <div className="flex items-start gap-4 flex-1 min-w-0">
+                          <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center shrink-0 mt-0.5", cfg.bg, cfg.color)}>
                             <AlertTriangle className="w-6 h-6" />
                           </div>
-                          <div>
+                          <div className="flex-1 min-w-0">
                             <p className="registration-plate text-lg text-foreground group-hover:text-aero-rose transition-colors">{aircraft?.registration}</p>
-                            <p className="text-sm font-semibold text-foreground mt-0.5">{alert.component}</p>
-                            <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{alert.notes}</p>
+                            <p className="text-sm font-semibold text-foreground mt-0.5 truncate">{alert.component}</p>
+                            <p className="text-xs text-muted-foreground mt-1.5 line-clamp-1">{alert.notes}</p>
                           </div>
                         </div>
-                        <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between gap-2 sm:gap-1">
-                          <Badge variant="outline" className={cn("text-[10px] font-bold shadow-sm", cfg.className)}>{cfg.label}</Badge>
+                        <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between gap-2 sm:gap-1 shrink-0 mt-2 sm:mt-0">
+                          <Badge variant="outline" className={cn("text-[10px] font-bold shadow-sm", cfg.color, cfg.border)}>{cfg.label}</Badge>
                           <span className={cn("mono-data font-bold", cfg.color)}>
                             {alert.type === 'document' ? 'Vencido' : `${(alert.next_due_hours - alert.current_hours).toFixed(1)}h passadas`}
                           </span>
@@ -118,21 +121,25 @@ export default function MaintenancePage() {
                   return (
                     <Card key={alert.id} className="glass border-border/50 hover:border-border transition-colors cursor-pointer group" onClick={() => setSelectedAlert(alert)}>
                       <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="registration-plate text-sm text-aero-cyan">{aircraft?.registration}</span>
-                            <span className="text-muted-foreground text-xs">•</span>
-                            <span className="text-sm font-semibold text-foreground truncate">{alert.component}</span>
+                        <div className="flex items-start gap-4 flex-1 min-w-0">
+                          <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center shrink-0 mt-0.5", cfg.bg, cfg.color)}>
+                            <AlertTriangle className="w-6 h-6" />
                           </div>
-                          <div className="w-full sm:w-2/3 h-1.5 bg-black/20 rounded-full overflow-hidden mt-3 mb-1">
-                            <div className="h-full bg-aero-amber transition-all duration-1000 rounded-full" style={{ width: `${progress}%` }} />
+                          <div className="flex-1 min-w-0">
+                            <p className="registration-plate text-lg text-foreground group-hover:text-aero-amber transition-colors">{aircraft?.registration}</p>
+                            <p className="text-sm font-semibold text-foreground mt-0.5 truncate">{alert.component}</p>
+                            <div className="mt-2 w-full sm:w-5/6">
+                              <div className="w-full h-1.5 bg-black/20 rounded-full overflow-hidden mb-1">
+                                <div className="h-full bg-aero-amber transition-all duration-1000 rounded-full" style={{ width: `${progress}%` }} />
+                              </div>
+                              <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">
+                                {progress.toFixed(1)}% consumido
+                              </p>
+                            </div>
                           </div>
-                          <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">
-                            {progress.toFixed(1)}% consumido
-                          </p>
                         </div>
-                        <div className="text-left sm:text-right shrink-0">
-                          <Badge variant="outline" className={cn("text-[10px] font-bold mb-1", cfg.className)}>{cfg.label}</Badge>
+                        <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between gap-2 sm:gap-1 shrink-0 mt-2 sm:mt-0">
+                          <Badge variant="outline" className={cn("text-[10px] font-bold shadow-sm", cfg.color, cfg.border)}>{cfg.label}</Badge>
                           <p className={cn("mono-data font-bold text-sm", cfg.color)}>
                             Faltam {(alert.next_due_hours - alert.current_hours).toFixed(1)}h
                           </p>

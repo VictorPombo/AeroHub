@@ -11,9 +11,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Plane, Plus, Search, Filter, Calendar, Gauge, Wrench, MoreVertical } from 'lucide-react';
+import { Plane, Plus, Search, Filter, Calendar, Gauge, Wrench, MoreVertical, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
+const FleetMap = dynamic(() => import('@/components/fleet-map'), { ssr: false });
 
 const statusConfig = {
   active: { label: 'Ativo', className: 'bg-aero-emerald/10 text-aero-emerald border-aero-emerald/20' },
@@ -56,6 +59,11 @@ export default function AircraftPage() {
           Nova Aeronave
         </Button>
       </div>
+
+      {/* Real-time Fleet Map */}
+      <Card className="glass border-border/50 p-1">
+        <FleetMap />
+      </Card>
 
       {/* Filters & Search */}
       <div className="flex flex-col sm:flex-row gap-3">

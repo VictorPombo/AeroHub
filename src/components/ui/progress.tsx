@@ -1,15 +1,19 @@
 "use client"
 
 import { Progress as ProgressPrimitive } from "@base-ui/react/progress"
-
 import { cn } from "@/lib/utils"
+
+export interface ProgressProps extends ProgressPrimitive.Root.Props {
+  indicatorClassName?: string
+}
 
 function Progress({
   className,
+  indicatorClassName,
   children,
   value,
   ...props
-}: ProgressPrimitive.Root.Props) {
+}: ProgressProps) {
   return (
     <ProgressPrimitive.Root
       value={value}
@@ -17,10 +21,11 @@ function Progress({
       className={cn("flex flex-wrap gap-3", className)}
       {...props}
     >
-      {children}
-      <ProgressTrack>
-        <ProgressIndicator />
-      </ProgressTrack>
+      {children ? children : (
+        <ProgressTrack>
+          <ProgressIndicator className={indicatorClassName} />
+        </ProgressTrack>
+      )}
     </ProgressPrimitive.Root>
   )
 }
@@ -29,7 +34,7 @@ function ProgressTrack({ className, ...props }: ProgressPrimitive.Track.Props) {
   return (
     <ProgressPrimitive.Track
       className={cn(
-        "relative flex h-1 w-full items-center overflow-x-hidden rounded-full bg-muted",
+        "relative flex h-full min-h-[0.25rem] w-full items-center overflow-x-hidden rounded-full bg-muted",
         className
       )}
       data-slot="progress-track"

@@ -1,0 +1,34 @@
+src/app/dashboard/aircraft/[id]/ctm/components/page.tsx(109,29): error TS2322: Type '{ value: number; className: string; indicatorClassName: string; }' is not assignable to type 'IntrinsicAttributes & ProgressProps & RefAttributes<HTMLDivElement>'.
+  Property 'indicatorClassName' does not exist on type 'IntrinsicAttributes & ProgressProps & RefAttributes<HTMLDivElement>'.
+src/app/dashboard/aircraft/[id]/page.tsx(137,14): error TS2304: Cannot find name 'Link'.
+src/app/dashboard/aircraft/[id]/page.tsx(138,16): error TS2304: Cannot find name 'Button'.
+src/app/dashboard/aircraft/[id]/page.tsx(140,17): error TS2304: Cannot find name 'Button'.
+src/app/dashboard/aircraft/[id]/page.tsx(141,15): error TS2304: Cannot find name 'Link'.
+src/app/dashboard/financial/page.tsx(141,16): error TS2304: Cannot find name 'FileText'.
+src/app/dashboard/inventory/page.tsx(16,76): error TS2367: This comparison appears to be unintentional because the types '"cancelled" | "draft" | "quoted" | "shipped" | "received"' and '"sent"' have no overlap.
+src/app/dashboard/maintenance/page.tsx(90,105): error TS2339: Property 'className' does not exist on type '{ label: string; color: string; border: string; bg: string; } | { label: string; color: string; border: string; bg: string; } | { label: string; color: string; border: string; bg: string; } | { label: string; color: string; border: string; bg: string; }'.
+  Property 'className' does not exist on type '{ label: string; color: string; border: string; bg: string; }'.
+src/app/dashboard/maintenance/page.tsx(142,105): error TS2339: Property 'className' does not exist on type '{ label: string; color: string; border: string; bg: string; } | { label: string; color: string; border: string; bg: string; } | { label: string; color: string; border: string; bg: string; } | { label: string; color: string; border: string; bg: string; }'.
+  Property 'className' does not exist on type '{ label: string; color: string; border: string; bg: string; }'.
+src/app/dashboard/pilot-profile/experience/page.tsx(54,72): error TS2322: Type '{ value: number; className: string; indicatorClassName: string; }' is not assignable to type 'IntrinsicAttributes & ProgressProps & RefAttributes<HTMLDivElement>'.
+  Property 'indicatorClassName' does not exist on type 'IntrinsicAttributes & ProgressProps & RefAttributes<HTMLDivElement>'.
+src/app/dashboard/pilot-profile/experience/page.tsx(72,73): error TS2322: Type '{ value: number; className: string; indicatorClassName: string; }' is not assignable to type 'IntrinsicAttributes & ProgressProps & RefAttributes<HTMLDivElement>'.
+  Property 'indicatorClassName' does not exist on type 'IntrinsicAttributes & ProgressProps & RefAttributes<HTMLDivElement>'.
+src/app/dashboard/pilot-profile/experience/page.tsx(90,70): error TS2322: Type '{ value: number; className: string; indicatorClassName: string; }' is not assignable to type 'IntrinsicAttributes & ProgressProps & RefAttributes<HTMLDivElement>'.
+  Property 'indicatorClassName' does not exist on type 'IntrinsicAttributes & ProgressProps & RefAttributes<HTMLDivElement>'.
+src/app/portal/flights/page.tsx(3,10): error TS2724: '"@/lib/mock-data"' has no exported member named 'mockFlights'. Did you mean 'mockFlightLogs'?
+src/app/portal/flights/page.tsx(12,40): error TS7006: Parameter 'f' implicitly has an 'any' type.
+src/app/portal/flights/page.tsx(12,85): error TS7006: Parameter 'a' implicitly has an 'any' type.
+src/app/portal/flights/page.tsx(12,88): error TS7006: Parameter 'b' implicitly has an 'any' type.
+src/app/portal/flights/page.tsx(34,24): error TS7006: Parameter 'flight' implicitly has an 'any' type.
+src/app/portal/maintenance/page.tsx(12,113): error TS2339: Property 'entry_date' does not exist on type 'WorkOrder'.
+src/app/portal/maintenance/page.tsx(12,148): error TS2339: Property 'entry_date' does not exist on type 'WorkOrder'.
+src/app/portal/maintenance/page.tsx(49,89): error TS2339: Property 'wo_number' does not exist on type 'WorkOrder'.
+src/app/portal/maintenance/page.tsx(56,77): error TS2339: Property 'entry_date' does not exist on type 'WorkOrder'.
+src/app/portal/maintenance/page.tsx(58,27): error TS2339: Property 'exit_date' does not exist on type 'WorkOrder'.
+src/app/portal/maintenance/page.tsx(60,47): error TS2339: Property 'exit_date' does not exist on type 'WorkOrder'.
+src/app/portal/page.tsx(3,24): error TS2724: '"@/lib/mock-data"' has no exported member named 'mockFlights'. Did you mean 'mockFlightLogs'?
+src/app/portal/page.tsx(13,40): error TS7006: Parameter 'f' implicitly has an 'any' type.
+src/app/portal/page.tsx(14,37): error TS7006: Parameter 'f' implicitly has an 'any' type.
+src/types/models.ts(11,13): error TS2300: Duplicate identifier 'MaintenanceStatus'.
+src/types/models.ts(201,13): error TS2300: Duplicate identifier 'MaintenanceStatus'.
