@@ -140,7 +140,7 @@ export default function CredentialsPage() {
           <div className="space-y-4 py-2">
             <div className="space-y-2">
               <Label>Tipo de Credencial</Label>
-              <Select value={type} onValueChange={setType}>
+              <Select value={type} onValueChange={(v) => v && setType(v)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>

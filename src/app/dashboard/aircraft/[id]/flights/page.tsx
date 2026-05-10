@@ -101,7 +101,9 @@ export default function AircraftFlightsPage() {
       pilot_id: user!.id,
       pilot_name: user!.full_name,
       total_airframe_hours: 1500 + duration,
+      aircraft_condition: 'normal',
       locked: false,
+      created_at: new Date().toISOString(),
     });
 
     // Update pilot hours
