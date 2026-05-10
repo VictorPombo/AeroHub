@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
 // ═══════════════════════════════════════════════════════
 // AeroGest — Sidebar Navigation
 // ═══════════════════════════════════════════════════════
 
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
   Plane,
@@ -23,79 +23,79 @@ import {
   ShieldCheck,
   Compass,
   Briefcase,
-} from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+} from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export type MockRole = 'admin' | 'pilot' | 'mechanic' | 'owner' | 'dov';
+export type MockRole = "admin" | "pilot" | "mechanic" | "owner" | "dov";
 
-const navItems = [
+export const navItems = [
   {
-    label: 'Dashboard',
-    href: '/dashboard',
+    label: "Dashboard",
+    href: "/dashboard",
     icon: LayoutDashboard,
-    roles: ['admin', 'dov', 'owner'],
+    roles: ["admin", "dov", "owner"],
   },
   {
-    label: 'Aeronaves',
-    href: '/dashboard/aircraft',
+    label: "Aeronaves",
+    href: "/dashboard/aircraft",
     icon: Plane,
-    roles: ['admin', 'dov', 'owner', 'mechanic', 'pilot'],
+    roles: ["admin", "dov", "owner", "mechanic", "pilot"],
   },
   {
-    label: 'Diário de Bordo',
-    href: '/dashboard/flights',
+    label: "Diário de Bordo",
+    href: "/dashboard/flights",
     icon: BookOpen,
-    roles: ['admin', 'dov', 'pilot'],
+    roles: ["admin", "dov", "pilot"],
   },
   {
-    label: 'Manutenção',
-    href: '/dashboard/maintenance',
+    label: "Manutenção",
+    href: "/dashboard/maintenance",
     icon: Wrench,
-    roles: ['admin', 'dov', 'mechanic'],
+    roles: ["admin", "dov", "mechanic"],
   },
   {
-    label: 'Tripulação',
-    href: '/dashboard/pilot-profile',
+    label: "Tripulação",
+    href: "/dashboard/pilot-profile",
     icon: UserCheck,
-    roles: ['admin', 'dov', 'pilot'],
+    roles: ["admin", "dov", "pilot"],
   },
   {
-    label: 'Vendas & Fretamento',
-    href: '/dashboard/commercial',
+    label: "Vendas & Fretamento",
+    href: "/dashboard/commercial",
     icon: Briefcase,
-    roles: ['admin', 'owner'],
+    roles: ["admin", "owner"],
   },
   {
-    label: 'Coordenação',
-    href: '/dashboard/coordination',
+    label: "Coordenação",
+    href: "/dashboard/coordination",
     icon: Compass,
-    roles: ['admin', 'dov'],
+    roles: ["admin", "dov"],
   },
   {
-    label: 'Segurança',
-    href: '/dashboard/safety',
+    label: "Segurança",
+    href: "/dashboard/safety",
     icon: ShieldAlert,
-    roles: ['admin', 'dov', 'pilot', 'mechanic'],
+    roles: ["admin", "dov", "pilot", "mechanic"],
   },
   {
-    label: 'Agendamentos',
-    href: '/dashboard/schedule',
+    label: "Agendamentos",
+    href: "/dashboard/schedule",
     icon: Calendar,
-    roles: ['admin', 'dov', 'owner'],
+    roles: ["admin", "dov", "owner"],
   },
   {
-    label: 'Perfil & LGPD',
-    href: '/dashboard/profile',
+    label: "Perfil & LGPD",
+    href: "/dashboard/profile",
     icon: User,
-    roles: ['admin', 'dov', 'owner', 'mechanic', 'pilot'],
+    roles: ["admin", "dov", "owner", "mechanic", "pilot"],
   },
   {
-    label: 'Configurações',
-    href: '/dashboard/settings',
+    label: "Configurações",
+    href: "/dashboard/settings",
     icon: Settings,
-    roles: ['admin'],
+    roles: ["admin"],
   },
 ];
 
@@ -104,21 +104,23 @@ export function Sidebar() {
   const router = useRouter();
   const { logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
-  const [activeRole, setActiveRole] = useState<MockRole>('admin');
+  const [activeRole, setActiveRole] = useState<MockRole>("admin");
 
   // Filtra os itens baseados na role atual
-  const filteredNavItems = navItems.filter(item => item.roles.includes(activeRole));
+  const filteredNavItems = navItems.filter((item) =>
+    item.roles.includes(activeRole),
+  );
 
   function handleLogout() {
     logout();
-    router.push('/login');
+    router.push("/login");
   }
 
   return (
     <aside
       className={cn(
-        'hidden lg:flex flex-col glass-strong h-screen sticky top-0 transition-all duration-300 ease-in-out z-40',
-        collapsed ? 'w-[72px]' : 'w-[260px]'
+        "hidden lg:flex flex-col glass-strong h-screen sticky top-0 transition-all duration-300 ease-in-out z-40",
+        collapsed ? "w-[72px]" : "w-[260px]",
       )}
     >
       {/* Logo */}
@@ -137,13 +139,17 @@ export function Sidebar() {
 
       {/* Role Switcher (Mock) */}
       <div className="px-3 py-3 border-b border-border/50">
-        {!collapsed && <p className="text-xs text-muted-foreground mb-2 px-1 font-semibold uppercase">Simulador de Acesso</p>}
-        <select 
-          value={activeRole} 
+        {!collapsed && (
+          <p className="text-xs text-muted-foreground mb-2 px-1 font-semibold uppercase">
+            Simulador de Acesso
+          </p>
+        )}
+        <select
+          value={activeRole}
           onChange={(e) => setActiveRole(e.target.value as MockRole)}
           className={cn(
             "w-full bg-black/20 border border-border/50 rounded-md text-xs py-1.5 px-2 outline-none text-aero-cyan focus:border-aero-cyan/50",
-            collapsed && "px-1 text-[10px]"
+            collapsed && "px-1 text-[10px]",
           )}
         >
           <option value="admin">Administrador</option>
@@ -159,17 +165,17 @@ export function Sidebar() {
         {filteredNavItems.map((item) => {
           const isActive =
             pathname === item.href ||
-            (item.href !== '/dashboard' && pathname.startsWith(item.href));
+            (item.href !== "/dashboard" && pathname.startsWith(item.href));
 
           return (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group relative',
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group relative",
                 isActive
-                  ? 'text-aero-cyan bg-aero-cyan/10'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-white/[0.04]'
+                  ? "text-aero-cyan bg-aero-cyan/10"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/[0.04]",
               )}
               title={collapsed ? item.label : undefined}
             >
@@ -179,8 +185,10 @@ export function Sidebar() {
               )}
               <item.icon
                 className={cn(
-                  'w-5 h-5 shrink-0 transition-colors',
-                  isActive ? 'text-aero-cyan' : 'text-muted-foreground group-hover:text-foreground'
+                  "w-5 h-5 shrink-0 transition-colors",
+                  isActive
+                    ? "text-aero-cyan"
+                    : "text-muted-foreground group-hover:text-foreground",
                 )}
               />
               {!collapsed && <span>{item.label}</span>}
